@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+
+main {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main img {
+    width: 90%;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.form-container {
+    width: 90%; 
+    margin: 10px auto; 
+}
+
+.first-row{
+    margin-top: 30px;
+}
+.first-row, .second-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%; 
+}
+
+.first-row input[type="text"],
+.first-row .search-btn {
+    padding: 5px 10px; /* Reduced padding to decrease height */
+    height: 40px; /* Set a specific height for the input and button */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: none; 
+}
+.first-row input[type="text"]{
+    width:57%;
+}
+
+.first-row .search-btn {
+    width:80px;
+    margin-right: 30px;
+}
+.first-row > *, .second-row > * {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1; 
+}
+
+.first-row .search-btn {
+    background-color: #C00000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: none; /* Remove flex-grow to match other buttons */
+}
+
+.first-row .radio-group-row {
+    display: flex;
+    border: none;
+    flex-direction: column;
+    gap: 10px; 
+    flex: 2; 
+}
+
+.first-row .radio-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px; 
+}
+
+
+.second-row .google-maps-btn {
+    background-color: #007DFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#map {
+    height: 400px; 
+    width: 600px; 
+    position: fixed;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -150%); 
+    z-index: 1001; 
+}
+
+#overlay {
+    position: fixed; /* Position it relative to the viewport */
+    width: 100%; /* Cover the full screen */
+    height: 100%; /* Cover the full screen */
+    top: 0; /* Start from the top */
+    left: 0; /* Start from the left */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 1000; /* Ensure it's below the map but above other elements */
+    display: none; /* Initially hide the overlay */
+}

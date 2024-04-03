@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joestable</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="styling.css">
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMLvdCYGi2kYc0n_cwutAlk280768TXk&callback=initMap"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="home.html"><img src="img/Screen Shot 2023-11-27 at 2.51.01 PM.png" alt="Joestable Logo"/></a></div>
+        <div id="navigation">
+            <a href="home.html">Home</a>
+            <a href="login.html">Login/Sign Up</a>
+        </div>
+        <div id="navigation-log">
+            <a href="home.html">Home</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="login.html" id="logout-btn">Logout</a>
+        </div>
+    </header>
+    <hr>
+    <main>
+        <div class="form-container">
+        <form action="search" method="get">
+            <div class="first-row">
+            <input type="text" name="name" id="name" placeholder="Restaurant Name" required><br>
+            <button type="submit" class="search-btn"><i class="fas fa-search" style="color:white;"></i> </button>
+            <div class="radio-group-row">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="criteria" value="best_match">
+                        Best Match
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="review_count">
+                        Review Count
+                    </label>
+                    
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" checked="checked" name="criteria" value="rating">
+                        Rating
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="distance">
+                        Distance
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class="second-row">
+            <input type="text" name="latitude" id="latitude" placeholder="Latitude" required>
+            <input type="text" name="longitude" id="longitude" placeholder="Longitude" required>
+            <button type="button" id="google-maps-btn" class="google-maps-btn">
+                <i class="fas fa-map-marker-alt" style="color: white;"></i> Google Maps (Drop a pin!)
+              </button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <section id="details">
+		<section id ="info"></section>
+		<section id="button">
+        <div id="user-buttons">
+            <button type="button" class="addfavorite-btn" id="addfavorite-btn"><i class="fas fa-star" style="color: grey;"></i> Add to Favorites</button>
+            <button type="button" class="deletefavorite-btn" id="deletefavorite-btn" style="display: none;"><i class="fas fa-star" style="color: grey;"></i> Remove from Favorites</button>
+            <button type="button" id="show-reservation-form"  class="reserve-btn">Add Reservation</button>
+        </div>
+        <div class="reservation-form" id = "reservation-form" style="display: none;">
+            <form id="reservation">
+                <div class="datetime-container">
+                    <div class="date-field">
+                        <input type="date" id="date" name="date" placeholder="Date" required>
+                    </div>
+                    <div class="time-field">
+                        <input type="time" id="time" name="time" placeholder="Time" required>
+                    </div>
+                </div>
+                <textarea id="notes" name="notes" rows="4" placeholder="Reservation Notes"></textarea>
+                <button type="submit" class="submit-reservation-btn" id="submit-reservation-btn">Submit Reservation</button>
+            </form>
+        </div>
+    </section>
+    </section>
+    <hr>
+    </main>
+    <div id="map" style="display: none;"></div>
+    <div id="overlay" style="display:none;"></div>
+
+    <script>
+        
+        document.getElementById('show-reservation-form').addEventListener('click', function() {
+	        var form = document.getElementById('reservation-form');
+	        form.style.display = 'block' ;
+	    });
+	    
+	    document.addEventListener('DOMContentLoaded', function() {
+		    var params = new URLSearchParams(window.location.search);
+		    var name = params.get('name');
+		    var address = params.get('address');
+		    var phone = params.get('phone');
+		    var imageLink = params.get('imageLink');
+		    var yelpLink = params.get('yelpLink');
+		    var cuisine = params.get('cuisine');
+		    var price = params.get('price');
+		    var rating = params.get('rating');
+		
+		    document.getElementById('info').innerHTML = `
+		        <h2>${decodeURIComponent(name)}</h2>
+		        <hr style="border: 0.5px solid #ddd; margin: 10px 0; margin-top: 30px">
+		        <div class="restaurant-info">
+					
+		           	<a href="${decodeURIComponent(yelpLink)}"> 
+		            <img src="${decodeURIComponent(imageLink)}" alt="${decodeURIComponent(name)}">
+		      		</a>
+		            <div> 
+		                <p><strong>Address:</strong> ${decodeURIComponent(address)}</p>
+		                <p><strong>Phone No.:</strong> ${decodeURIComponent(phone)}</p>
+		                <p><strong>Cuisine:</strong> ${decodeURIComponent(cuisine)}</p>
+		                <p><strong>Price:</strong> ${decodeURIComponent(price)}</p>
+		                <p><strong>Rating:</strong> ${getStars(decodeURIComponent(rating))}</p>
+		            </div>
+		        </div>
+		    `;
+
+			});
+			
+		function getStars(rating) {
+			    let stars = '';
+			    for (let i = 1; i <= 5; i++) {
+			        if (i <= rating) {
+			            stars += '<i class="fas fa-star" style="color: #666;"></i>'; // Full star
+			        } else if (i - rating < 1) {
+			            stars += '<i class="fas fa-star-half-alt" style="color: #666;"></i>'; // Half star
+			        } else {
+			            stars += '<i class="far fa-star" style="color: #666;"></i>'; // Empty star
+			        }
+			    }
+			    return stars;
+			}
+
+        const userbuttons = document.getElementById("user-buttons");
+        
+        function getCookie(name) {
+		    const cDecoded = decodeURIComponent(document.cookie); // Decode the cookie string
+		    const cArray = cDecoded.split('; '); // Split it into an array of cookie-value pairs
+		    let result = null;
+		
+		    cArray.forEach(element => {
+		        let [cookieName, cookieValue] = element.split('=');
+		        if (cookieName === name) {
+		            result = cookieValue;
+		        }
+		    });
+		    return result;
+		}
+		
+		var userLoggedIn = getCookie("userLoggedIn");
+		if (userLoggedIn === "true") {
+		    userbuttons.style.display = "block";
+		} else {
+		    userbuttons.style.display = "none";
+		}
+		
+		var params = new URLSearchParams(window.location.search);
+		var resName = params.get('name');
+		const decodedName = decodeURIComponent(resName).replaceAll(' ', '+');
+		console.log(decodedName);
+		var favCookieName = "fav_" + decodedName;
+		console.log(favCookieName);
+	
+	    var isFavorite = getCookie(favCookieName);
+	    console.log(isFavorite);
+	    if (isFavorite === "true") {
+	        
+	        document.querySelector('.addfavorite-btn').style.display = 'none';
+	        document.querySelector('.deletefavorite-btn').style.display = 'block';
+	    } else {
+	       
+	        document.querySelector('.addfavorite-btn').style.display = 'block';
+	        document.querySelector('.deletefavorite-btn').style.display = 'none';
+	    }
+
+		
+		
+		document.getElementById('addfavorite-btn').addEventListener('click', function() {
+		    var params = new URLSearchParams(window.location.search);
+    		var resName = params.get('name');
+    		console.log("Retrieved Restaurant Name: ", resName);
+		    var userId = getCookie("userId");
+		    console.log("Retrieved User ID: ", userId);
+		    
+		    
+		    fetch('/tanbryan_CSCI201_Assignment4/addFav', {
+		        method: 'POST',
+		        headers: {
+		            'Content-Type': 'application/x-www-form-urlencoded',
+		        },
+		        body: 'Restaurant=' + encodeURIComponent(resName) + '&Name=' + encodeURIComponent(userId)
+		    })
+		    .then(response => response.text())
+		    .then(data => {
+		        console.log(data); // Handle the response data
+		        if(data.includes("Favorite added successfully")) {
+		            // Hide the Add to Favorites button
+		            document.querySelector('.addfavorite-btn').style.display = 'none';
+		            // Show the Delete from Favorites button
+		            document.querySelector('.deletefavorite-btn').style.display = 'block';
+		        }
+		    })
+		    .catch(error => {
+		        console.error('Error:', error); // Handle any errors
+		    });
+		});
+		
+			document.getElementById('deletefavorite-btn').addEventListener('click', function() {
+			    var params = new URLSearchParams(window.location.search);
+			    var resName = params.get('name');
+			    console.log("Retrieved Restaurant Name: ", resName);
+			    var userId = getCookie("userId");
+			    console.log("Retrieved User ID: ", userId);
+			    
+			    fetch('/tanbryan_CSCI201_Assignment4/deleteFav', {
+			        method: 'POST',
+			        headers: {
+			            'Content-Type': 'application/x-www-form-urlencoded',
+			        },
+			        body: 'Restaurant=' + encodeURIComponent(resName) + '&Name=' + encodeURIComponent(userId)
+			    })
+			    .then(response => response.text())
+			    .then(data => {
+			        console.log(data); // Handle the response data
+			        if(data.includes("Favorite deleted successfully")) {
+			            // Show the Add to Favorites button
+			            document.querySelector('.addfavorite-btn').style.display = 'block';
+			            // Hide the Delete from Favorites button
+			            document.querySelector('.deletefavorite-btn').style.display = 'none';
+			        }
+			    })
+			    .catch(error => {
+			        console.error('Error:', error); // Handle any errors
+			    });
+			});
+			
+			document.getElementById('submit-reservation-btn').addEventListener('click', function() {
+				event.preventDefault(); 
+			    var params = new URLSearchParams(window.location.search);
+			    var resName = params.get('name');
+			    var userId = getCookie("userId");
+			    
+			     var  date = document.getElementById('date').value;
+			     console.log("Retrieved date: ", date);
+			     var  time =  document.getElementById('time').value;
+			     console.log("Retrieved time: ", time);
+			   
+			    fetch('/tanbryan_CSCI201_Assignment4/addRes', {
+			        method: 'POST',
+			        headers: {
+			            'Content-Type': 'application/x-www-form-urlencoded',
+			        },
+			        body: 'Restaurant=' + encodeURIComponent(resName) + '&Name=' + encodeURIComponent(userId) +'&Date=' +encodeURIComponent(date) + '&Time=' +encodeURIComponent(time) 
+			    })
+			    .then(response => response.text())
+			    .then(data => {
+			        console.log(data); // Handle the response data
+			       
+			    })
+			    .catch(error => {
+			        console.error('Error:', error); // Handle any errors
+			    });
+			});
+
+    </script>
+    <script src="shared.js"></script>
+</body>
+</html> 

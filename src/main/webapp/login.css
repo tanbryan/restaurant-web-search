@@ -1,0 +1,67 @@
+.main-content {
+    width: 100%;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    display: flex; 
+    justify-content: space-around; 
+}
+
+.login-section,
+.signup-section {
+    margin-bottom: 20px;
+    flex: 1; 
+    margin: 10px; 
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 30px; 
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 5px;
+    vertical-align: middle; 
+}
+
+.form-group label {
+    display: inline; 
+    margin-bottom: 5px; 
+}
+
+button {
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px; 
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 5px;
+}

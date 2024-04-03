@@ -1,0 +1,162 @@
+/* Styles for the search results section */
+#search-results, #details,  #fav-result, #reservations-list {
+    margin: 20px;
+    padding: 10px;
+    width: 80%;
+}
+
+.result-container, .restaurant-info{
+    display: flex; /* Align image and details side by side */
+    align-items: center; /* Center items vertically */
+    background-color: #fff; /* White background for each result */
+}
+#search-results h2, #details h1,  #fav-result h2, #reservations-list h2{
+    color: #333; /* Dark grey text for the heading */
+    font-size: 24px; /* Larger font size for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.result-item, .restaurant-info, .fav-item, .res-item{
+    align-items: center; /* Center items vertically */
+   
+    padding: 20px; /* Padding inside each result item */
+    background-color: #fff; /* White background for each result */
+
+}
+
+.result-item a, .fav-item a{
+	color: #666;
+    text-decoration: none; 
+}
+
+.result-item a:hover {
+    text-decoration: none; 
+}
+
+.result-item img, .restaurant-info img,.fav-item img, .res-item img {
+    width: 200px; 
+    height:200px;
+    border-radius: 10px; /* Rounded corners for images */
+    margin-right: 50px; /* Space between image and details */
+    margin-top:20px;
+}
+
+.result-item div, .restaurant-info div, .fav-item div, .res-item div{
+    flex-grow: 1; 
+}
+
+
+.result-item h3,  .fav-item h3, .res-item h3 {
+    margin: 10;
+    color: #333; /* Dark grey text for the restaurant name */
+    font-size: 18px; /* Size of the restaurant name */
+}
+
+.result-item p, .restaurant-info p,  .fav-item p, .res-item p{
+    color: #666; 
+    margin: 10px 0; 
+}
+
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+}
+
+.addfavorite-btn, .deletefavorite-btn,
+.reserve-btn, .reservation-form submit-reservation-btn {
+    padding: 10px 20px;
+    margin-bottom: 10px; 
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px; 
+    text-align: center; 
+    width: 100%; 
+}
+
+.addfavorite-btn, .deletefavorite-btn {
+    background-color: #ffcc00; 
+    color: #333;
+}
+
+
+.reserve-btn {
+    background-color: #c1272d; 
+}
+
+
+
+.reservation-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.datetime-container {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.datetime-container .date-field,
+.datetime-container .time-field {
+    display: flex;
+    margin-top: 10px;
+    width:100%;
+}
+
+.reservation-form input[type="date"],
+.reservation-form input[type="time"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px; /* Aligns with the margin for the textarea */
+    width:100%;
+}
+
+.reservation-form textarea {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-reservation-btn {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #c1272d; /* Red color for the submit button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styles for the sort dropdown */
+.sort-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    margin-right: 20px; 
+    margin-bottom: 20px;
+}
+
+
+.sort-dropdown select {
+    padding: 10px 20px;
+    border-radius: 5px; 
+    cursor: pointer; 
+    background-color: #c1272d; 
+    color: white; 
+    font-size: 16px; 
+    outline: none; 
+}
+
+
+
+.favorites-header, .res-header {
+    display: flex;
+    justify-content: space-between; /* Space between the title and the dropdown */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 20px; /* Space below the header */
+}
+

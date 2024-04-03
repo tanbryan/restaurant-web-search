@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joestable</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="home.html"><img src="img/Screen Shot 2023-11-27 at 2.51.01 PM.png" alt="Joestable Logo"/></a></div>
+        <div id="navigation-log">
+            <a href="home.html">Home</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="login.html" id="logout-btn">Logout</a>
+        </div>
+    </header>
+    <hr>
+    <main><div class="form-container">
+        <form action="search.html" method="get">
+            <div class="first-row">
+            <input type="text" name="name" id="name" placeholder="Restaurant Name" required><br>
+            <button type="submit" class="search-btn"><i class="fas fa-search" style="color:white;"></i> </button>
+            <div class="radio-group-row">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="criteria" value="best_match">
+                        Best Match
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="review_count">
+                        Review Count
+                    </label>
+                    
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" checked="checked" name="criteria" value="rating">
+                        Rating
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="distance">
+                        Distance
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class="second-row">
+            <input type="text" name="latitude" id="latitude" placeholder="Latitude" required>
+            <input type="text" name="longitude" id="longitude" placeholder="Longitude" required>
+            <button type="button" id="google-maps-btn" class="google-maps-btn">
+                <i class="fas fa-map-marker-alt" style="color: white;"></i> Google Maps (Drop a pin!)
+              </button>
+            </div>
+        </form>
+    </div>
+    <hr>
+        <section id="fav-result">
+            <div class="favorites-header">
+                <h2 id="favorites-header"></h2>
+                <div class="sort-dropdown">
+                    <select id="sortby">
+					    <option value="a_to_z">A to Z</option>
+					    <option value="z_to_a">Z to A</option>
+					    <option value="highest_rating">Highest Rating</option>
+					    <option value="lowest_rating">Lowest Rating</option>
+					    <option value="most_recent" selected>Most Recent</option>
+					    <option value="least_recent">Least Recent</option>
+					</select>
+                </div>
+            </div>
+
+            <div id="favorites-list">
+				
+            </div>
+        </section>
+    </main>
+    <div id="map" style="display: none;"></div>
+    <div id="overlay" style="display:none;"></div>
+
+    <script>
+	    let favoritesData = []; // This will store the fetched favorites data
+	
+	    document.getElementById('sortby').addEventListener('change', function() {
+	        sortFavorites(this.value);
+	        displayFavorites(favoritesData); 
+	    });
+	    
+	    function sortFavorites(criteria) {
+	        switch (criteria) {
+	            case 'a_to_z':
+	                favoritesData.sort((a, b) => a.name.localeCompare(b.name));
+	                break;
+	            case 'z_to_a':
+	                favoritesData.sort((a, b) => b.name.localeCompare(a.name));
+	                break;
+	            case 'highest_rating':
+	                favoritesData.sort((a, b) => b.rating - a.rating);
+	                break;
+	            case 'lowest_rating':
+	                favoritesData.sort((a, b) => a.rating - b.rating);
+	                break;
+	            case 'most_recent':
+	                break;
+	            case 'least_recent':
+	                favoritesData = [...favoritesData].reverse();
+	                break;
+	        }
+	    }
+	
+	    document.addEventListener('DOMContentLoaded', function() {
+	        var userId = getCookie("userId");
+	        var url = '/tanbryan_CSCI201_Assignment4/displayFav?Name=' + userId;
+	        fetch(url)
+	            .then(response => response.json())
+	            .then(data => {
+	                 favoritesData = data.favorites; // Store the data
+			            sortFavorites('most_recent'); 
+			            displayResults(data);// Initial display
+	            })
+	            .catch(error => console.error('Error:', error));
+	    });
+	
+	    function displayResults(data) {
+	        const favoritesList = document.getElementById('favorites-header');
+	        favoritesList.innerHTML = ''; // Clear existing favorites
+	        
+	        var resultsHeading = document.createElement('h2');
+	        resultsHeading.textContent = data.username + "'s Favorites:";
+	        console.log(data);
+	        favoritesList.appendChild(resultsHeading);
+	        
+	        displayFavorites(data.favorites); // Initial display of favorites
+	    }
+	
+	    function displayFavorites(favorites) {
+	        const favoritesList = document.getElementById('favorites-list');
+			favoritesList.innerHTML = ''; 
+	
+	        favorites.forEach(fav => {
+	            var favDiv = document.createElement('div');
+	            favDiv.className = 'fav-item';
+	            favDiv.innerHTML = `
+	            	<hr style="border: 0.5px solid #ddd ">
+	            	<div class="result-container">
+	                <a href="detail.html?name=${encodeURIComponent(fav.name)}&address=${encodeURIComponent(fav.address)}&phone=${encodeURIComponent(fav.phone)}&imageLink=${encodeURIComponent(fav.imageLink)}&cuisine=${encodeURIComponent(fav.cuisine)}&price=${encodeURIComponent(fav.price)}&rating=${encodeURIComponent(fav.rating)}">
+	                    <img src="${fav.imageLink}" alt="${fav.name}">
+	                </a>
+	                <div>
+	                    <h3>${fav.name}</h3>
+	                    <p>${fav.address}</p>
+	                    <a href="${fav.yelpLink}">${fav.yelpLink}</a>
+	                </div>
+	                 </div>
+	            `;
+	            favoritesList.appendChild(favDiv);
+	        });
+	    }
+	
+	
+	</script>
+
+    <script src="shared.js"></script>
+
+</body>
+</html>
+

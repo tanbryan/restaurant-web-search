@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="home.html"><img src="img/Screen Shot 2023-11-27 at 2.51.01 PM.png" alt="Joestable Logo"/></a></div>
+        <div id="navigation">
+            <a href="home.html">Home</a>
+            <a href="login.html">Login/Sign Up</a>
+        </div>
+    </header>
+    <hr>
+    <main>
+    <div class="main-content">
+        <div class="login-section" id="loginForm">
+            <h2>Login</h2>
+            <form action="/tanbryan_CSCI201_Assignment4/login" method="post">
+
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" name="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="loginPassword" required>
+                </div>
+                <button type="submit" id="loginButton"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            </form>
+        </div>
+        <div class="signup-section">
+            <h2>Sign Up</h2>
+
+            <form action="/tanbryan_CSCI201_Assignment4/register" method="post">
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" name="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" name="signupUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I have read and agree to all terms and conditions of JoesTable.</label>
+                </div>
+                <button type="submit" id="signupButton"><i class="fas fa-user-plus"></i> Create Account</button>
+            </form>
+        </div>
+    </div>
+    </main>
+    <script>
+		//
+    document.querySelector('.login-section form').addEventListener('submit', function(event) {
+	    event.preventDefault();
+	    var username = document.getElementById('loginUsername').value;
+	    var password = document.getElementById('loginPassword').value;
+	
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("POST", "/tanbryan_CSCI201_Assignment4/login", true);
+	    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	    xhr.onreadystatechange = function() {
+	        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+	            window.location.href = "home.html";
+	        } else if (this.readyState === XMLHttpRequest.DONE && this.status === 401) {
+	            alert("Invalid username or password");
+	        }
+	    }
+	    xhr.send("loginUsername=" + encodeURIComponent(username) + "&loginPassword=" + encodeURIComponent(password));
+	});
+
+	document.querySelector('.signup-section form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var email = document.getElementById('signupEmail').value;
+    var username = document.getElementById('signupUsername').value;
+    var password = document.getElementById('signupPassword').value;
+    var confirm = document.getElementById('confirmPassword').value;
+
+    // Validate password match
+    if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/tanbryan_CSCI201_Assignment4/register", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            window.location.href = "home.html";
+        } else if (this.readyState === XMLHttpRequest.DONE && this.status === 401) {
+            alert("Email or Username is registered");
+        }
+    }
+    xhr.send("signupEmail=" + encodeURIComponent(email) + "&signupUsername=" + encodeURIComponent(username) + "&signupPassword=" + encodeURIComponent(password) + "&confirmPassword=" + encodeURIComponent(confirm));
+});
+    
+    
+
+</script>
+<script src="shared.js"></script>
+
+</body>
+</html>

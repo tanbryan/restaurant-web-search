@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    
+}
+
+header {
+    width: 95%;
+    background-color: white;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo img {
+    height: 100px;
+}
+
+#navigation a, #navigation-log a{
+    text-decoration: none;
+    color: black;
+    padding: 0 10px;
+}

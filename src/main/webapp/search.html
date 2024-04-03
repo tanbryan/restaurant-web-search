@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Page</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="styling.css">
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMLvdCYGi2kYc0n_cwutAlk280768TXk&callback=initMap"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="home.html"><img src="img/Screen Shot 2023-11-27 at 2.51.01 PM.png" alt="Joestable Logo"/></a></div>
+        <div id="navigation">
+            <a href="home.html">Home</a>
+            <a href="login.html">Login/Sign Up</a>
+        </div>
+        <div id="navigation-log">
+            <a href="home.html">Home</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="login.html" id="logout-btn">Logout</a>
+        </div>
+    </header>
+    <hr>
+    <main>
+        <div class="form-container">
+        <form id="search-form" action="search" method="get">
+            <div class="first-row">
+            <input type="text" name="name" id="name" placeholder="Restaurant Name" required><br>
+            <button type="submit" class="search-btn"><i class="fas fa-search" style="color:white;"></i> </button>
+            <div class="radio-group-row">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="criteria" value="best_match">
+                        Best Match
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="review_count">
+                        Review Count
+                    </label>
+                    
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" checked="checked" name="criteria" value="rating">
+                        Rating
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="distance">
+                        Distance
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class="second-row">
+            <input type="text" name="latitude" id="latitude" placeholder="Latitude" required>
+            <input type="text" name="longitude" id="longitude" placeholder="Longitude" required>
+            <button type="button" id="google-maps-btn" class="google-maps-btn">
+                <i class="fas fa-map-marker-alt" style="color: white;"></i> Google Maps (Drop a pin!)
+              </button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <section id="search-results">
+		   <h2></h2>
+		   
+    </section>
+    <hr>
+    </main>
+    <div id="map" style="display: none;"></div>
+    <div id="overlay" style="display:none;"></div>
+
+
+	 <script src="search.js"></script>
+    <script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joestable</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="home.css">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMLvdCYGi2kYc0n_cwutAlk280768TXk&callback=initMap"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="home.html"><img src="img/Screen Shot 2023-11-27 at 2.51.01 PM.png" alt="Joestable Logo"/></a></div>
+        <div id="navigation">
+            <a href="home.html">Home</a>
+            <a href="login.html">Login/Sign Up</a>
+        </div>
+        <div id="navigation-log">
+            <a href="home.html">Home</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="reservations.html">Reservations</a>
+            <a href="login.html" id="logout-btn">Logout</a>
+        </div>
+    </header>
+    <hr>
+    <main>
+        <img src="img/Home Page Image.jpg" style="border-radius: 50px; padding: 20px; height: auto; width: 90%;" alt="Cover Picture">
+        <div class="form-container">
+        <form action="search.html" method="get" id="home-search-form">
+            <div class="first-row">
+            <input type="text" name="name" id="name" placeholder="Restaurant Name" required><br>
+            <button type="submit" class="search-btn"><i class="fas fa-search" style="color:white;"></i> </button>
+            <div class="radio-group-row">
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="criteria" value="best_match"required>
+                        Best Match
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="review_count"required>
+                        Review Count
+                    </label>
+                    
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="criteria" value="rating"required>
+                        Rating
+                    </label>
+                    <label>
+                        <input type="radio" name="criteria" value="distance"required >
+                        Distance
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class="second-row">
+            <input type="text" name="latitude" id="latitude" placeholder="Latitude" required>
+            <input type="text" name="longitude" id="longitude" placeholder="Longitude" required>
+            <button type="button" id="google-maps-btn" class="google-maps-btn">
+                <i class="fas fa-map-marker-alt" style="color: white;"></i> Google Maps (Drop a pin!)
+              </button>
+            </div>
+        </form>
+    </div>
+    </main>
+    <div id="map" style="display: none;"></div>
+    <div id="overlay" style="display:none;"></div>
+    <script>
+    document.getElementById('home-search-form').addEventListener('submit', function(event) {
+	        event.preventDefault();
+	        var name = document.getElementById('name').value;
+	        var latitude = document.getElementById('latitude').value;
+	        var longitude = document.getElementById('longitude').value;
+	        var criteria = document.querySelector('input[name="criteria"]:checked').value;
+	
+	        window.location.href = 'search.html?name=' + encodeURIComponent(name) + '&latitude=' + encodeURIComponent(latitude) + '&longitude=' + encodeURIComponent(longitude) + '&criteria=' + encodeURIComponent(criteria);
+	    });
+	</script>
+    <script src="shared.js"></script>
+</body>
+</html>
+
+
